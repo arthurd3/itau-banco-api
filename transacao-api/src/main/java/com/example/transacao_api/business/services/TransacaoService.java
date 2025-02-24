@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -30,6 +31,24 @@ public class TransacaoService {
             log.error("Valor negativo");
             throw new UnprocessebleEntity("Valor negativo");
         }
+
+        listaTransacao.add(dto);
+    }
+
+    public void limparTransacao() {
+        listaTransacao.clear();
+    }
+
+    public List<TransacaoRequestDTO> buscarTransacoes(Integer intervaloBusca){
+        OffsetDateTime dataBusca = OffsetDateTime.now().minusSeconds(intervaloBusca);
+
+        return listaTransacao.stream().filter(transacao -> transacao.dataTransacao().isAfter(dataBusca)).toList();
+
+        // 1- chama a lista de transacao ( listaTransacao )
+        // 2- chama o javaStream para filtrar ( stream() )
+        // 3- ele vai filtrar cada uma das transacao ( filter() )
+        // 4- e verifica se a data e hora e posterior a data e hora do intervalo ( transacao.dataTransacao().isAfter(dataBusca) )
+        // 5- se for posterior ele adiciona a lista ( .toList() )
     }
 
 }
