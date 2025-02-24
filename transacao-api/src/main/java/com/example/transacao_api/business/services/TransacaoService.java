@@ -21,7 +21,7 @@ public class TransacaoService {
 
     public void adicionarTransacao(TransacaoRequestDTO dto) {
 
-        log.info("iniciado o processamento de gravar transacoes");
+        log.info("iniciado o processamento de gravar transacoes" + dto);
 
         if(dto.dataTransacao().isAfter(OffsetDateTime.now())){
             log.error("Data e hora maiores que a data atual");
@@ -31,17 +31,22 @@ public class TransacaoService {
             log.error("Valor negativo");
             throw new UnprocessebleEntity("Valor negativo");
         }
-
         listaTransacao.add(dto);
+        log.info("Transacoes Adicionadas com sucesso");
     }
 
     public void limparTransacao() {
+        log.info("iniciado o processamento de limpar transacoes");
         listaTransacao.clear();
+        log.info("Transacoes Limpada com sucesso");
     }
 
     public List<TransacaoRequestDTO> buscarTransacoes(Integer intervaloBusca){
+        log.info("iniciado o processamento de buscar transacoes" + intervaloBusca);
         OffsetDateTime dataBusca = OffsetDateTime.now().minusSeconds(intervaloBusca);
 
+
+        log.info("Retorno de transacoes com sucesso");
         return listaTransacao.stream().filter(transacao -> transacao.dataTransacao().isAfter(dataBusca)).toList();
 
         // 1- chama a lista de transacao ( listaTransacao )
